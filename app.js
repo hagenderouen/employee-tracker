@@ -1,7 +1,8 @@
 const mysql = require('mysql');
 const cTable = require('console.table');
-require('dotenv').config();
 // requie('inquirer')
+require('dotenv').config();
+const Employee = require('./models/employee');
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -11,12 +12,7 @@ const connection = mysql.createConnection({
     database: 'employee_tracker_db',
 });
 
-// CRUD employees
-const createEmployee = () => {
-    console.log('Creating a new employee...\n');
-    // do something
-}
-
+// READ employees
 const readEmployees = () => {
     console.log('Selecting all employees...\n');
     connection.query(
@@ -33,6 +29,19 @@ const readEmployees = () => {
       connection.end();
     });
 };
+
+// CREATE employees
+const createEmployee = (employee) => {
+    console.log('Creating a new employee...\n');
+    connection.query('INSER INTO employees SET ?', employee, (err, res) => {
+        if (err) throw err;
+        console.log(`${res.affectedRows} employees updated!\n`);
+        readEmployees();
+    });
+}
+
+// UPDATE employees
+// DELETE employees
 
 // Departments: sales, engineering, accounting
 // Roles: sales rep, software engineer, accountant
