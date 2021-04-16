@@ -3,7 +3,7 @@ const Employee = require('../models/employee');
 const connection = require('./connection');
 
 // READ employees
-const readEmployees = () => {
+const readEmployees = (cb) => {
     console.log('\n');
     connection.query(
         `SELECT e.id, e.first_name, e.last_name, title, salary, d.name AS department, CONCAT_WS(' ', m.first_name, m.last_name) AS manager
@@ -14,28 +14,28 @@ const readEmployees = () => {
             ON r.department_id = d.id
             LEFT JOIN employees as m
             on e.manager_id = m.id;`, (err, res) => {
-      if (err) throw err;
-      console.table(res);
+      if (err) cb(err, null);
       connection.end();
+      cb(null, res);
     });
 };
 
 // CREATE employees
-const createEmployee = (employee) => {
+const createEmployee = (employee, cb) => {
     console.log('Creating a new employee...\n');
     connection.query(
         'INSERT INTO employees SET ?',
         employee,
         (err, res) => {
-        if (err) throw err;
+        if (err) cb(err, null);
         console.log(`${res.affectedRows} employees updated!`);
-        readEmployees();
+        cb(null, res);
     });
     
 }
 
 // UPDATE employees
-const updateEmployee = (employee) => {
+const updateEmployee = (employee, cb) => {
     console.log('Updating employee...\n');
     connection.query(
         'UPDATE employees SET ? WHERE ?',
@@ -46,15 +46,15 @@ const updateEmployee = (employee) => {
             }
         ],
         (err, res) => {
-            if (err) throw err;
+            if (err) cb(err, null);
             console.log(`${res.affectedRows} employee updated!`);
-            readEmployees();
+            cb(null, res);
         }
     );
 }
 
 // DELETE employees
-const deleteEmployee = (employee) => {
+const deleteEmployee = (employee, cb) => {
     console.log('Deleting employee...\n');
     connection.query(
         'DELETE FROM employees WHERE ?',
@@ -62,9 +62,9 @@ const deleteEmployee = (employee) => {
             id: employee.id
         },
         (err, res) => {
-            if (err) throw err;
+            if (err) cb(err, null);
             console.log(`${res.affectedRows} employee deleted!`);
-            readEmployees();
+            cb(null, res);
         }
     );
 }
