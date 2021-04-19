@@ -16,7 +16,7 @@ CREATE TABLE role (
     department_id INTEGER
 );
 
-CREATE TABLE employees (
+CREATE TABLE employee (
 	id INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
@@ -34,12 +34,10 @@ VALUES ('sales rep', 45000, 2),
 ('software engineer', 55000, 3),
 ('accountant', 50000, 1);
 
-SELECT * FROM role;
-
-INSERT INTO employees (first_name, last_name, role_id)
+INSERT INTO employee (first_name, last_name, role_id)
 VALUES ('Bob', 'Smith', 2),
 ('Erica', 'Baidu', 1),
 ('Jimmy', 'John', 3);
 
-INSERT INTO employees (first_name, last_name, role_id, manager_id)
+INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES ('James', 'Rockefeller', 2, 1);
