@@ -1,7 +1,6 @@
 const connection = require('./config/connection');
 
 const readMain = (cb) => {
-    console.log('\n');
     connection.query(
         `SELECT e.id, e.first_name, e.last_name, title, salary, d.name AS department, CONCAT_WS(' ', m.first_name, m.last_name) AS manager
         FROM employees AS e
@@ -20,7 +19,7 @@ const readMain = (cb) => {
 const createOne = (tableName, data, cb) => {
     console.log(`Inserting into ${tableName}...\n`);
     connection.query(
-        'INSERT INTO ? SET ?',
+        'INSERT INTO ?? SET ?',
         [
             tableName,
             data
@@ -35,7 +34,7 @@ const createOne = (tableName, data, cb) => {
 const updateOneById = (tableName, data, cb) => {
     console.log(`Updating ${tableName}...\n`);
     connection.query(
-        'UPDATE ? SET ? WHERE ?',
+        'UPDATE ?? SET ? WHERE ?',
         [
             tableName,
             data, 
@@ -54,7 +53,7 @@ const updateOneById = (tableName, data, cb) => {
 const deleteOneById = (tableName, data, cb) => {
     console.log(`Deleting from ${tableName}...\n`);
     connection.query(
-        'DELETE FROM ? WHERE ?',
+        'DELETE FROM ?? WHERE ?',
         [
             tableName,
             {
@@ -71,11 +70,24 @@ const deleteOneById = (tableName, data, cb) => {
 
 const readAll = (tableName, cb) => {
     connection.query(
-        'SELECT * FROM ?', tableName, (err, res) => {
+        'SELECT * FROM ??', tableName, (err, res) => {
             if (err) cb(err, null);
             connection.end();
             cb(null, res);
         }
     );
 };
+
+readAll('role', (err, res) => {
+    if (err) console.log(err);
+    console.log(res);
+})
+
+module.exports = {
+    readMain,
+    createOne,
+    updateOneById,
+    deleteOneById,
+    readAll
+}
 
