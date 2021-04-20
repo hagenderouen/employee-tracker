@@ -10,9 +10,14 @@ const readMain = (cb) => {
             ON r.department_id = d.id
             LEFT JOIN employees as m
             on e.manager_id = m.id;`, (err, res) => {
-      if (err) cb(err, null);
-      connection.end();
-      cb(null, res);
+      if (err) {
+          connection.end();
+          cb(err, null);
+      } else {
+        connection.end();
+        cb(null, res);
+      }
+      
     });
 };
 
@@ -25,9 +30,15 @@ const createOne = (tableName, data, cb) => {
             data
         ],
         (err, res) => {
-        if (err) cb(err, null);
-        console.log(`${res.affectedRows} ${tableName} updated!`);
-        cb(null, res);
+        if (err) {
+            connection.end();
+            cb(err, null);
+        } else {
+            connection.end();
+            console.log(`${res.affectedRows} ${tableName} updated!`);
+            cb(null, res);
+        }
+        
     });  
 };
 
@@ -43,9 +54,15 @@ const updateOneById = (tableName, data, cb) => {
             }
         ],
         (err, res) => {
-            if (err) cb(err, null);
-            console.log(`${res.affectedRows} ${tableName} updated!`);
-            cb(null, res);
+            if (err) {
+                connection.end();
+                cb(err, null);
+            } else {
+                connection.end();
+                console.log(`${res.affectedRows} ${tableName} updated!`);
+                cb(null, res);
+            }
+            
         }
     );
 };
@@ -61,9 +78,15 @@ const deleteOneById = (tableName, data, cb) => {
             }
         ],
         (err, res) => {
-            if (err) cb(err, null);
-            console.log(`${res.affectedRows} employee deleted!`);
-            cb(null, res);
+            if (err) {
+                connection.end();
+                cb(err, null);
+            } else {
+                connection.end();
+                console.log(`${res.affectedRows} employee deleted!`);
+                cb(null, res);
+            }   
+            
         }
     );
 };
@@ -71,17 +94,17 @@ const deleteOneById = (tableName, data, cb) => {
 const readAll = (tableName, cb) => {
     connection.query(
         'SELECT * FROM ??', tableName, (err, res) => {
-            if (err) cb(err, null);
-            connection.end();
-            cb(null, res);
+            if (err) {
+                connection.end();
+                cb(err, null);
+            } else {
+                connection.end();
+                cb(null, res);
+            }
+            
         }
     );
 };
-
-readAll('role', (err, res) => {
-    if (err) console.log(err);
-    console.log(res);
-})
 
 module.exports = {
     readMain,
